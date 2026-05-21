@@ -748,7 +748,7 @@
         </div>
         <h1>Outlast Trials Assignment</h1>
       </div>
-      <div class="top-stats" aria-label="Randomizer stats">
+      <div class="top-stats" aria-label="Randomiser stats">
         <span class="chip" id="poolCount">11 trials active</span>
         <span class="chip" id="difficultyCount">4 difficulties active</span>
       </div>
@@ -776,7 +776,7 @@
           </div>
           <div class="stamp roulette-fade" id="resultStamp">Awaiting selection</div>
           <div class="roulette-fade">
-            <h2 class="trial-name" id="trialName">Press randomize</h2>
+            <h2 class="trial-name" id="trialName">Press Randomise</h2>
             <p class="environment" id="environmentName">No therapy assigned yet.</p>
           </div>
           <div class="difficulty-readout roulette-fade">
@@ -786,7 +786,7 @@
         </div>
 
         <div class="result-actions">
-          <button class="primary" type="button" id="randomizeButton">Randomize Trial</button>
+          <button class="primary" type="button" id="RandomiseButton">Randomise Trial</button>
         </div>
       </section>
 
@@ -872,7 +872,7 @@
       environmentName: document.querySelector("#environmentName"),
       difficultyName: document.querySelector("#difficultyName"),
       difficultyNote: document.querySelector("#difficultyNote"),
-      randomizeButton: document.querySelector("#randomizeButton"),
+      RandomiseButton: document.querySelector("#RandomiseButton"),
       rollerTrack: document.querySelector("#rollerTrack"),
       rollerDifficulty: document.querySelector("#rollerDifficulty"),
       selectAllDifficultiesButton: document.querySelector("#selectAllDifficultiesButton"),
@@ -997,8 +997,8 @@
 
       els.resultBody.classList.add("is-rolling");
       els.rollerTrack.innerHTML = "";
-      els.randomizeButton.disabled = true;
-      els.randomizeButton.textContent = "Rolling...";
+      els.RandomiseButton.disabled = true;
+      els.RandomiseButton.textContent = "Rolling...";
 
       return new Promise((resolve) => {
         const start = performance.now();
@@ -1050,7 +1050,7 @@
         els.trialName.textContent = "Choose a pool";
         els.environmentName.textContent = "Keep at least one trial and one difficulty active.";
         els.difficultyName.textContent = "Difficulty: None";
-        els.difficultyNote.textContent = "The randomizer is waiting for something to draw.";
+        els.difficultyNote.textContent = "The Randomiser is waiting for something to draw.";
         fitTrialName();
         updateUI();
         return;
@@ -1099,8 +1099,8 @@
       els.poolCount.textContent = `${selectedCount} ${selectedCount === 1 ? "trial" : "trials"} active`;
       els.difficultyCount.textContent = `${difficultyCount} ${difficultyCount === 1 ? "difficulty" : "difficulties"} active`;
       els.coverageLabel.textContent = `${seen} / ${selectedCount || trials.length} seen`;
-      els.randomizeButton.disabled = state.isRolling || selectedCount === 0 || difficultyCount === 0;
-      els.randomizeButton.textContent = state.isRolling ? "Rolling..." : "Randomize Trial";
+      els.RandomiseButton.disabled = state.isRolling || selectedCount === 0 || difficultyCount === 0;
+      els.RandomiseButton.textContent = state.isRolling ? "Rolling..." : "Randomise Trial";
 
       renderDifficultyOptions();
       renderTrialOptions();
@@ -1182,7 +1182,7 @@
       updateUI();
     });
 
-    els.randomizeButton.addEventListener("click", roll);
+    els.RandomiseButton.addEventListener("click", roll);
     els.selectAllDifficultiesButton.addEventListener("click", () => {
       state.difficultySet = new Set(difficulties.map((_, index) => index));
       refillBag("difficulty");
