@@ -394,7 +394,6 @@
       color: var(--dim);
       font-size: 0.9rem;
       line-height: 1.35;
-     
     }
 
     .result-actions {
@@ -566,6 +565,79 @@
       scrollbar-color: var(--blood) rgba(255,255,255,0.05);
     }
 
+    .location-group {
+      display: grid;
+      gap: 8px;
+      padding: 10px 0 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .location-group:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .location-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      padding: 6px 0;
+      background: linear-gradient(180deg, rgba(6,6,6,0.98), rgba(6,6,6,0.88));
+      backdrop-filter: blur(8px);
+    }
+
+    .location-title {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .location-title strong {
+      color: #ffd5d0;
+      font-size: 0.78rem;
+      font-weight: 950;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .location-title span {
+      color: var(--dim);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .location-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .location-action {
+      min-height: 30px;
+      border: 1px solid rgba(237, 39, 32, 0.26);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 0 9px;
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: transform 140ms ease, border-color 140ms ease, color 140ms ease, background 140ms ease;
+    }
+
+    .location-action:hover {
+      transform: translateY(-1px);
+      border-color: #ff554c;
+      color: var(--text);
+    }
+
     .trial-option {
       width: 100%;
       min-height: 58px;
@@ -735,6 +807,15 @@
       .secondary {
         flex: 1;
       }
+
+      .location-header {
+        align-items: flex-start;
+      }
+
+      .location-actions {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
     }
   </style>
 </head>
@@ -749,7 +830,7 @@
         <h1>Outlast Trials Assignment</h1>
       </div>
       <div class="top-stats" aria-label="Randomiser stats">
-        <span class="chip" id="poolCount">11 trials active</span>
+        <span class="chip" id="poolCount">53 trials active</span>
         <span class="chip" id="difficultyCount">4 difficulties active</span>
       </div>
     </header>
@@ -807,7 +888,7 @@
           <div class="control-group">
             <div class="label-row">
               <span>Trial pool</span>
-              <span class="small">Tap to include</span>
+              <span class="small">Tap a trial or toggle by location</span>
             </div>
             <div class="pool-actions">
               <button class="secondary" type="button" id="selectAllButton">Select All</button>
@@ -820,7 +901,7 @@
         <section class="queue-panel">
           <div class="section-title">
             <h2>Recent Rolls</h2>
-            <span class="small" id="coverageLabel">0 / 11 seen</span>
+            <span class="small" id="coverageLabel">0 / 53 seen</span>
           </div>
           <div class="queue" id="historyList">
             <div class="empty-state">Rolled trials will appear here.</div>
@@ -833,17 +914,73 @@
   <script>
     const trials = [
       { name: "Kill the Snitch", environment: "Police Station" },
+      { name: "Cancel the Autopsy", environment: "Police Station" },
+      { name: "Sabotage the Lockdown", environment: "Police Station" },
+      { name: "Release the Prisoners", environment: "Police Station" },
+      { name: "Teach the Police Officer", environment: "Police Station" },
+      { name: "Eliminate the Past", environment: "Police Station" },
+      { name: "Seize the Narcotics", environment: "Police Station" },
+
       { name: "Cleanse the Orphans", environment: "Orphanage" },
+      { name: "Feed the Children", environment: "Orphanage" },
+      { name: "Foster the Orphans", environment: "Orphanage" },
+      { name: "Gather the Children of God", environment: "Orphanage" },
+      { name: "Reunite the Family", environment: "Orphanage" },
+
       { name: "Grind the Bad Apples", environment: "Fun Park" },
+      { name: "Punish the Miscreants", environment: "Fun Park" },
+      { name: "Open the Gates", environment: "Fun Park" },
+      { name: "Drill the Futterman", environment: "Fun Park" },
+      { name: "Deface the Futtermans", environment: "Fun Park" },
+      { name: "Redeem your Freedom", environment: "Fun Park" },
+      { name: "Beguile the Children", environment: "Fun Park" },
+      { name: "Win the Truth", environment: "Fun Park" },
+
       { name: "Vindicate the Guilty", environment: "Courthouse" },
+      { name: "Escape the Courthouse", environment: "Courthouse" },
+      { name: "Destroy the Evidence", environment: "Courthouse" },
+      { name: "Tilt the Scales of Justice", environment: "Courthouse" },
+      { name: "Fuel the Release", environment: "Courthouse" },
+      { name: "Sentence the Prosecuted", environment: "Courthouse" },
+
       { name: "Pervert the Futterman", environment: "Toy Factory" },
+      { name: "Crush the Sex Toys", environment: "Toy Factory" },
+      { name: "Incinerate the Sex Toys", environment: "Toy Factory" },
+      { name: "Shutdown the Factory", environment: "Toy Factory" },
+      { name: "Fumigate the Factory", environment: "Toy Factory" },
+      { name: "Flatten the Foreman", environment: "Toy Factory" },
+
       { name: "Poison the Medicine", environment: "The Docks" },
+      { name: "Empty the Vault", environment: "The Docks" },
+      { name: "Poison the Cattle", environment: "The Docks" },
+      { name: "Stash the Contraband", environment: "The Docks" },
+      { name: "Cook the Informant", environment: "The Docks" },
+
       { name: "Pleasure the Prosecutor", environment: "Downtown" },
+      { name: "Kidnap the Mistress", environment: "Downtown" },
+      { name: "Spread the Disease", environment: "Downtown" },
+      { name: "Traffick the Product", environment: "Downtown" },
+
       { name: "Liquidate the Union", environment: "The Suburbs" },
+      { name: "Get Out the Vote", environment: "The Suburbs" },
+      { name: "Disrupt the Neighborhood", environment: "The Suburbs" },
+      { name: "Eliminate the Legacy", environment: "The Suburbs" },
+
       { name: "Kill the Politician", environment: "Shopping Mall" },
+      { name: "Investigate the Minotaur", environment: "Shopping Mall" },
+      { name: "Fabricate the Scandal", environment: "Shopping Mall" },
+
       { name: "Despoil the Auction", environment: "Resort" },
-      { name: "Silence the Idol", environment: "Television Studio" }
+      { name: "Solve the Murder", environment: "Resort" },
+      { name: "Incinerate the Relic", environment: "Resort" },
+
+      { name: "Silence the Idol", environment: "Television Studio" },
+
+      { name: "Escape", environment: "Waste Tunnel" },
+      { name: "Escape the Lies", environment: "Waste Tunnel" }
     ];
+
+    const locations = [...new Set(trials.map((trial) => trial.environment))];
 
     const difficulties = [
       { name: "Introductory", detail: "easy money", color: "#ff8d84" },
@@ -1091,6 +1228,13 @@
       els.resultBody.classList.add("roll");
     }
 
+    function getLocationTrialIndexes(location) {
+      return trials
+        .map((trial, index) => ({ trial, index }))
+        .filter((item) => item.trial.environment === location)
+        .map((item) => item.index);
+    }
+
     function updateUI() {
       const selectedCount = state.selected.size;
       const difficultyCount = state.difficultySet.size;
@@ -1122,15 +1266,39 @@
         return map;
       }, new Map());
 
-      els.trialList.innerHTML = trials.map((trial, index) => `
-        <button class="trial-option ${state.selected.has(index) ? "active" : ""}" type="button" data-trial="${index}">
-          <span class="trial-copy">
-            <strong>${trial.name}</strong>
-            <span class="trial-environment">${trial.environment}</span>
-          </span>
-          <span class="frequency">${counts.get(index) || 0}x</span>
-        </button>
-      `).join("");
+      els.trialList.innerHTML = locations.map((location) => {
+        const locationIndexes = getLocationTrialIndexes(location);
+        const selectedInLocation = locationIndexes.filter((index) => state.selected.has(index)).length;
+
+        return `
+          <div class="location-group">
+            <div class="location-header">
+              <div class="location-title">
+                <strong>${location}</strong>
+                <span>${selectedInLocation} / ${locationIndexes.length} active</span>
+              </div>
+              <div class="location-actions">
+                <button class="location-action" type="button" data-location-select="${location}">Select</button>
+                <button class="location-action" type="button" data-location-clear="${location}">Clear</button>
+              </div>
+            </div>
+
+            ${locationIndexes.map((index) => {
+              const trial = trials[index];
+
+              return `
+                <button class="trial-option ${state.selected.has(index) ? "active" : ""}" type="button" data-trial="${index}">
+                  <span class="trial-copy">
+                    <strong>${trial.name}</strong>
+                    <span class="trial-environment">${trial.environment}</span>
+                  </span>
+                  <span class="frequency">${counts.get(index) || 0}x</span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }).join("");
     }
 
     function renderHistory() {
@@ -1168,6 +1336,28 @@
     });
 
     els.trialList.addEventListener("click", (event) => {
+      const locationSelectButton = event.target.closest("[data-location-select]");
+      if (locationSelectButton) {
+        const location = locationSelectButton.dataset.locationSelect;
+        getLocationTrialIndexes(location).forEach((index) => {
+          state.selected.add(index);
+        });
+        state.trialBag = state.trialBag.filter((item) => state.selected.has(item));
+        updateUI();
+        return;
+      }
+
+      const locationClearButton = event.target.closest("[data-location-clear]");
+      if (locationClearButton) {
+        const location = locationClearButton.dataset.locationClear;
+        getLocationTrialIndexes(location).forEach((index) => {
+          state.selected.delete(index);
+        });
+        state.trialBag = state.trialBag.filter((item) => state.selected.has(item));
+        updateUI();
+        return;
+      }
+
       const button = event.target.closest("[data-trial]");
       if (!button) return;
 
